@@ -1,14 +1,14 @@
 
 static inline int __xcap_probe_skb(void *ctx, struct sk_buff *skb, u16 trace_index)
 {
-	u32 pkt_len, liner_len, pullen = 0;
+	u64 pkt_len, liner_len, pullen = 0;
 	void *data;
 	struct pcap *pcap;
 	u32 key = 0;
 	void *skb_head, *skb_data;
-	u32 skb_len, skb_datalen;
-	u32 copy_liner_len;
-	u16 caplen;
+	u64 skb_len, skb_datalen;
+	u64 copy_liner_len;
+	u64 caplen;
 
 	if (!(pcap = xcap_skb_scratch.lookup(&key)))
 		goto end;
