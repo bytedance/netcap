@@ -33,7 +33,7 @@ func getSkbOffsetOnTracepoint(title string, name string) (int, error) {
 
 	arr := strings.Split(str, "\n")
 
-	mode := `\s*field:void\s+\*\s+skbaddr;\s+offset:(\d+);`
+    mode := `\s*field:(const\s+)*void\s+\*\s+skbaddr;\s+offset:(\d+);`
 
 	reg := regexp.MustCompile(mode)
 
@@ -43,7 +43,7 @@ func getSkbOffsetOnTracepoint(title string, name string) (int, error) {
 		if len(match) <= 1 {
 			continue
 		}
-		return strconv.Atoi(match[1])
+        return strconv.Atoi(match[len(match)-1])
 	}
 
 	return 0, fmt.Errorf("tracepoint does not has skb param: %s", path)
