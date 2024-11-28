@@ -16,7 +16,9 @@ limitations under the License.
 package output
 
 import (
+	"bytes"
 	"fmt"
+	"log"
 	"os"
 	"os/exec"
 )
@@ -41,7 +43,6 @@ func newTcpdumpProxy(out *os.File, flags string) tcpdumpProxy {
 
 	s.cmd.Stdin = r1
 	s.cmd.Stdout = out
-
 	s.inputFile = w1
 
 	go s.run()
@@ -54,8 +55,13 @@ func (s *tcpdumpProxyImpl) GetInput() *os.File {
 }
 
 func (s *tcpdumpProxyImpl) run() {
+	var (
+		stdErr bytes.Buffer
+	)
+	s.cmd.Stderr = &stdErr
 	err := s.cmd.Run()
 	if err != nil {
+		log.Fatalf("cmd run failed:%s,%s\n", stdErr.String(), err.Error())
 		os.Exit(0)
 	}
 }
