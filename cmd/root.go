@@ -16,6 +16,10 @@ limitations under the License.
 package cmd
 
 import (
+	"os"
+	"os/signal"
+	"syscall"
+
 	"github.com/spf13/cobra"
 )
 
@@ -36,6 +40,19 @@ func Execute() {
 	cobra.CheckErr(rootCmd.Execute())
 }
 
-func init() {
+// Process the SIGINT signal, the program will print the stderr if the program receive the SIGINT.
+// So, it should be exit with no err messages.
+func SignalProcess() {
+	stopChan := make(chan struct{}, 1)
+	signalChan := make(chan os.Signal, 1)
+	go func() {
+		<-signalChan
+		stopChan <- struct{}{}
+		os.Exit(0)
+	}()
+	signal.Notify(signalChan, syscall.SIGINT)
+}
 
+func init() {
+	SignalProcess()
 }
