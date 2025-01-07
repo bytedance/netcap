@@ -99,7 +99,7 @@ netcap help mbuf
 
   用户自定义的匹配后的action，在action中netcap会把user填充的自定义的结构体的信息与pkt一起输出到控制台。[输出sock信息的例子](doc/example/ext_action/sk_stat_action.c)
   ```shell
-  # 其中 tcp_drop 第2个参数为skb, 第1个参数为sk
+  # 其中 tcp_rcv_established @2表示第2个参数为skb, @1表示第1个参数sk作为ext传入到 --ext-action指定的函数
   netcap skb -f tcp_rcv_established@2@1 -e "port 8888"  --ext-action sk_stat_action.c
   ```
   输出如下图所示：
