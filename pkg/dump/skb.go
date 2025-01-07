@@ -49,12 +49,12 @@ func NewSkbDump(opt *SkbOption) (Operator, error) {
 
 	skbOpt := &code.SkbOption{
 		Option: code.Option{
-			TcpdumpExpression:  opt.TcpdumpExpression,
-			UserFilterFilePath: opt.UserFilterFilePath,
-			UserActionFilePath: opt.UserActionFilePath,
-			CaptureMaxSize:     opt.CaptureMaxSize,
-			FunctionDesc:       s.parser.Get(),
-			IsDumpStack:        opt.IsDumpStack,
+			TcpdumpExpression: opt.TcpdumpExpression,
+			ExtFilterFilePath: opt.ExtFilterFilePath,
+			ExtActionFilePath: opt.ExtActionFilePath,
+			CaptureMaxSize:    opt.CaptureMaxSize,
+			FunctionDesc:      s.parser.Get(),
+			IsDumpStack:       opt.IsDumpStack,
 		},
 		Interface:     opt.Interface,
 		IsFakeHdr:     opt.IsFakeHdr,

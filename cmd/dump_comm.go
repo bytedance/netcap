@@ -31,9 +31,9 @@ var (
 	dumpTcpdumpFlags     string = "-nn"
 	dumpCount            uint32 = 0
 
-	userFilterFile  string = ""
-	userActionFile  string = ""
-	userOutputColor string = ""
+	extFilterFile  string = ""
+	extActionFile  string = ""
+	extOutputColor string = ""
 
 	isDryRun                   bool   = false
 	isGatherStatistic          bool   = false
@@ -61,11 +61,11 @@ func dumpCmdLine(c *cobra.Command) {
 	c.PersistentFlags().Uint32VarP(&captureMaxSize, "capture-max-size", "", captureMaxSize,
 		"the buff size of capture packe, if the pkt_len exceeds this value, \nthen it will be truncated, and it's in range:[128,1514]")
 
-	c.PersistentFlags().StringVarP(&userFilterFile, "user-filter", "", userFilterFile,
+	c.PersistentFlags().StringVarP(&extFilterFile, "ext-filter", "", extFilterFile,
 		"user filter ebpf file path")
-	c.PersistentFlags().StringVarP(&userActionFile, "user-action", "", userActionFile,
+	c.PersistentFlags().StringVarP(&extActionFile, "ext-action", "", extActionFile,
 		"user action ebpf file path")
-	c.PersistentFlags().StringVarP(&userOutputColor, "user-output-color", "", userOutputColor,
+	c.PersistentFlags().StringVarP(&extOutputColor, "ext-output-color", "", extOutputColor,
 		"user output color: red|green|yellow|blue|purple|cyan")
 
 	c.PersistentFlags().BoolVarP(&isDryRun, "dry-run", "", isDryRun, "NOT true run, only dump ebpf C code")
@@ -92,9 +92,9 @@ func runDump(dumpOp dump.Operator) {
 
 func commOption() *dump.Option {
 	opt := &dump.Option{
-		UserFilterFilePath:         userFilterFile,
-		UserActionFilePath:         userActionFile,
-		UserOutputColor:            userOutputColor,
+		ExtFilterFilePath:          extFilterFile,
+		ExtActionFilePath:          extActionFile,
+		ExtOutputColor:             extOutputColor,
 		TcpdumpFlags:               dumpTcpdumpFlags,
 		TcpdumpExpression:          dumpFilterExpression,
 		TraceFunction:              dumpTraceFunction,

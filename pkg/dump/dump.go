@@ -29,9 +29,9 @@ type Operator interface {
 }
 
 type Option struct {
-	UserFilterFilePath  string
-	UserActionFilePath  string
-	UserOutputColor     string
+	ExtFilterFilePath   string
+	ExtActionFilePath   string
+	ExtOutputColor      string
 	TcpdumpFlags        string
 	TcpdumpExpression   string
 	TraceFunction       string
@@ -77,7 +77,7 @@ func (s *dumpBaseImpl) baseInit(opt *Option) error {
 
 func driverOption(opt *Option, c code.Operator, isStackDump bool, stackDumpColor string) *driver.Option {
 	drverOp := &driver.Option{
-		UserOuputColor:             opt.UserOutputColor,
+		ExtOuputColor:              opt.ExtOutputColor,
 		DumpWriteFilePath:          opt.DumpWriteFilePath,
 		DumpWriteFileRotate:        opt.DumpWriteFileRotate,
 		TcpdumpFlags:               opt.TcpdumpFlags,

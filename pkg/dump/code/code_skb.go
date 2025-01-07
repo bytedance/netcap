@@ -154,8 +154,8 @@ func (s *skbCodeImpl) generateSkbKrpbe(desc *tparser.FunctionDescribe, traceInde
 		return "", nil, fmt.Errorf("skb trace-function kprobe need param %v, such as func@1", desc)
 	}
 
-	if desc.ParamIndex2 != 0 {
-		return "", nil, fmt.Errorf("skb trace-function kprobe only has 1 param: %v", desc)
+	if desc.ParamIndex2 == desc.ParamIndex1 {
+		return "", nil, fmt.Errorf("skb trace-function kprobe ext-param-index error equal to skb-param-index: %v", desc)
 	}
 
 	info := &TraceInfo{
@@ -167,6 +167,14 @@ func (s *skbCodeImpl) generateSkbKrpbe(desc *tparser.FunctionDescribe, traceInde
 	code = strings.ReplaceAll(code, "SKB_KPROBE", info.EbpfFunctionName)
 	code = strings.ReplaceAll(code, "SKB_REGS_PARAM_X", "PT_REGS_PARM"+strconv.FormatInt(int64(desc.ParamIndex1), 10))
 	code = strings.ReplaceAll(code, "TRACE_INDEX", strconv.FormatInt(int64(traceIndex), 10))
+
+	if desc.ParamIndex2 != 0 {
+		code = strings.ReplaceAll(code, "SKB_SET_EXT_PARAM",
+			"ext = (void*)PT_REGS_PARM"+strconv.FormatInt(int64(desc.ParamIndex2), 10)+"(ctx);")
+	} else {
+		code = strings.ReplaceAll(code, "SKB_SET_EXT_PARAM", "")
+	}
+
 	return code, info, nil
 }
 

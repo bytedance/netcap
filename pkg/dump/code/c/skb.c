@@ -1,5 +1,5 @@
 
-static inline int __xcap_probe_skb(void *ctx, struct sk_buff *skb, u16 trace_index)
+static inline int __xcap_probe_skb(void *ctx, struct sk_buff *skb, void *ext, u16 trace_index)
 {
 	u64 pkt_len, liner_len, pullen = 0;
 	void *data;
@@ -54,14 +54,14 @@ static inline int __xcap_probe_skb(void *ctx, struct sk_buff *skb, u16 trace_ind
 	}
 #endif
 
-#ifdef ENABLE_USER_FILTER
-	if (!xcap_user_filter(ctx, skb, trace_index)) {
+#ifdef ENABLE_EXT_FILTER
+	if (!xcap_ext_filter(ext, skb, trace_index)) {
 		goto end;
 	}
 #endif
 
 	__pcap_fill_header(pcap, skb, pkt_len, caplen, trace_index);
-	skb_capture_event_notify(ctx, skb, pkt_len, pcap);
+	skb_capture_event_notify(ctx, skb, pkt_len, pcap, ext);
 
 end:
 	return 0;

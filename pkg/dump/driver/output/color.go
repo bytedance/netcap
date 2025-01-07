@@ -16,6 +16,10 @@ limitations under the License.
 package output
 
 func getOutputColor(color string) (prefix string, suffix string) {
+	if color == "" {
+		color = "green"
+	}
+
 	if color == "red" {
 		prefix = "\033[0;31m"
 		suffix = "\033[0m"

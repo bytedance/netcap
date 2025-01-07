@@ -40,15 +40,15 @@ static inline void __process_user(struct pt_regs *ctx, struct pcap *pcap, void *
 		return;
 #endif
 
-#ifdef ENABLE_USER_FILTER
-	if (!xcap_user_filter(ctx, ptr_pkt, trace_index)) 
+#ifdef ENABLE_EXT_FILTER
+	if (!xcap_ext_filter(NULL, ptr_pkt, trace_index)) 
 		return;
 #endif
 
 	__pcap_fill_header(pcap, ptr_pkt, pkt_len, cap_len, trace_index);
 
-#ifdef ENABLE_USER_ACTION
-	pcap->hdr.extend_action_ret = xcap_user_action(ctx, ptr_pkt, pkt_len, &pcap->user, trace_index);
+#ifdef ENABLE_EXT_ACTION
+	pcap->hdr.extend_action_ret = xcap_ext_action(NULL, ptr_pkt, pkt_len, &pcap->user, trace_index);
 #endif
 	
 	mbuf_capture_event_notify(ctx, ptr_pkt, pcap, trace_index);

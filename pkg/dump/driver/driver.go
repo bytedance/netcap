@@ -38,7 +38,7 @@ const (
 )
 
 type Option struct {
-	UserOuputColor             string
+	ExtOuputColor              string
 	DumpWriteFilePath          string
 	DumpWriteFileRotate        uint32
 	TcpdumpFlags               string
@@ -152,7 +152,7 @@ func (s *driverBaseImpl) _baseNewOutput(opt *Option) (output.Operator, error) {
 
 	outputOpt := &output.Option{
 		ExtendOp:            s.extendOp,
-		UserOutputColor:     opt.UserOuputColor,
+		ExtOutputColor:      opt.ExtOuputColor,
 		TcpdumpFlags:        opt.TcpdumpFlags,
 		WritePcapFilePath:   opt.DumpWriteFilePath,
 		WritePcapFileRotate: opt.DumpWriteFileRotate,

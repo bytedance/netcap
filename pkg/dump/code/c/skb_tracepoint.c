@@ -8,5 +8,5 @@ int SKB_TRACEPOINT(struct TP_STRUCT_args *args)
 {
     struct sk_buff *skb = (struct sk_buff*)(args->skbaddr);
 
-    return __xcap_probe_skb(args, skb, TRACE_INDEX);
+    return __xcap_probe_skb(args, skb, NULL, TRACE_INDEX);
 }
