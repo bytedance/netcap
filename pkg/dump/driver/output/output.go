@@ -24,7 +24,7 @@ import (
 )
 
 type Option struct {
-	UserOutputColor     string
+	ExtOutputColor      string
 	ExtendOp            extend.Operator
 	TcpdumpFlags        string
 	WritePcapFilePath   string
@@ -72,7 +72,7 @@ type baseImpl struct {
 func (s *baseImpl) _baseInit(opt *Option) {
 	s.extendOper = opt.ExtendOp
 
-	s.userOutputPrefix, s.userOutputSuffix = getOutputColor(opt.UserOutputColor)
+	s.userOutputPrefix, s.userOutputSuffix = getOutputColor(opt.ExtOutputColor)
 }
 
 func (s *baseImpl) _baseClose() {

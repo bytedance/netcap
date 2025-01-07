@@ -38,10 +38,10 @@ type Operator interface {
 }
 
 type Option struct {
-	UserFilterFilePath string
-	UserActionFilePath string
-	TcpdumpExpression  string
-	CaptureMaxSize     uint32
+	ExtFilterFilePath string
+	ExtActionFilePath string
+	TcpdumpExpression string
+	CaptureMaxSize    uint32
 
 	IsDumpStack bool
 
@@ -107,22 +107,22 @@ func (s *baseCodeImpl) baseGenerate(opt *Option) error {
 		s.tcpdumpFilterCode = ""
 	}
 
-	if opt.UserFilterFilePath != "" {
-		s.userFilterCode, err = _readFile(opt.UserFilterFilePath)
+	if opt.ExtFilterFilePath != "" {
+		s.userFilterCode, err = _readFile(opt.ExtFilterFilePath)
 		if err != nil {
 			return err
 		}
-		s.compileFlags = append(s.compileFlags, "-DENABLE_USER_FILTER")
+		s.compileFlags = append(s.compileFlags, "-DENABLE_EXT_FILTER")
 	} else {
 		s.userFilterCode = ""
 	}
 
-	if opt.UserActionFilePath != "" {
-		s.userActionCode, err = _readFile(opt.UserActionFilePath)
+	if opt.ExtActionFilePath != "" {
+		s.userActionCode, err = _readFile(opt.ExtActionFilePath)
 		if err != nil {
 			return err
 		}
-		s.compileFlags = append(s.compileFlags, "-DENABLE_USER_ACTION")
+		s.compileFlags = append(s.compileFlags, "-DENABLE_EXT_ACTION")
 	} else {
 		s.userActionCode = ""
 	}

@@ -44,12 +44,12 @@ func NewRawDump(opt *RawOption) (Operator, error) {
 
 	rawOpt := &code.RawOption{
 		Option: code.Option{
-			TcpdumpExpression:  opt.TcpdumpExpression,
-			UserFilterFilePath: opt.UserFilterFilePath,
-			UserActionFilePath: opt.UserActionFilePath,
-			CaptureMaxSize:     opt.CaptureMaxSize,
-			FunctionDesc:       s.parser.Get(),
-			IsDumpStack:        false,
+			TcpdumpExpression: opt.TcpdumpExpression,
+			ExtFilterFilePath: opt.ExtFilterFilePath,
+			ExtActionFilePath: opt.ExtActionFilePath,
+			CaptureMaxSize:    opt.CaptureMaxSize,
+			FunctionDesc:      s.parser.Get(),
+			IsDumpStack:       false,
 		},
 	}
 

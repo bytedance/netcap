@@ -2,7 +2,7 @@
 
 ## 简介
 
-netcap是一个基于bcc，可对含skb作为参数的系统函数，或者基于DPDK的mbuf抓包分析的工具。简单试用如下：
+netcap(内部称为xcap)是一个基于bcc，可对含skb作为参数的系统函数，或者基于DPDK的mbuf抓包分析的工具。简单试用如下：
 
 ```shell
 netcap skb -f icmp_rcv@1 -e "host 10.227.0.72" -i eth0
@@ -40,6 +40,7 @@ netcap help mbuf
 
   * -f tracepoint:net:netif_receive_skb  是tracepoint的方式，此时无需param1和param2。
   * -f icmp_rcv@1  是kprbe的方式，需要param1，表示skb是被trace函数的第几个参数（从1开始），无需param2。
+  * -f tcp_rcv_established@2@1 这里@2表示第2个参数是skb，后面的@1是ext扩展参数,关于此参数详见 --ext-action 描述。
 
   对于mbuf模式, 由于DPDK会使用mbuf数组，故使用param2的时候表示是mbuf数组，仅仅使用param1的时候是mbuf：
 
@@ -87,15 +88,23 @@ netcap help mbuf
 
   此功能较为复杂，可参照Example理解。
 
-* --user-filter  filename.c
+* --ext-filter  filename.c
 
-  用户自定义filter，[filter脚本模版](doc/example/skb_user_filter.c)
+  用户自定义filter，[只看TCP的FIN包的自定义filter例子](doc/example/ext_filter/skb_filter_tcp_fin.c)
+  ```shell
+  netcap skb -f tcp_drop@2 -e 'port 8888' -t "-nnv"  --ext-filter skb_filter_tcp_fin.c
+  ```
 
-* --user-action  filename.c
+* --ext-action  filename.c
 
-  用户自定义的匹配后的action，在action中netcap会把user填充的自定义的结构体的信息与pkt一起输出到控制台。[action脚本模版](doc/example/skb_user_action.c)
-
-  * --user-output-color : 设置打印user Ouput的颜色: red|green|yellow|blue|purple|cyan。
+  用户自定义的匹配后的action，在action中netcap会把user填充的自定义的结构体的信息与pkt一起输出到控制台。[输出sock信息的例子](doc/example/ext_action/sk_stat_action.c)
+  ```shell
+  # 其中 tcp_drop 第2个参数为skb, 第1个参数为sk
+  netcap skb -f tcp_rcv_established@2@1 -e "port 8888"  --ext-action sk_stat_action.c
+  ```
+  输出如下图所示：
+  ![](doc/jpg/ext-action.jpg)
+  * --ext-output-color : 设置打印user Ouput的颜色: red|green|yellow|blue|purple|cyan。
 
 * --dry-run
 
@@ -122,6 +131,8 @@ netcap help mbuf
   * --stack-dump-color : 设置打印kstack的颜色: red|green|yellow|blue|purple|cyan。
 
 ### mbuf/raw模式的参数
+  注：mbuf用于DPDK开发，raw用于AFXDP开发。
+  注：usdt受限于上游库修改，用兴趣的可以自行魔改。
 
 * -p  pid
 

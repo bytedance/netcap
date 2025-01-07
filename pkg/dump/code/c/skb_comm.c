@@ -7,14 +7,14 @@ BPF_STACK_TRACE(xcap_stack, 2048);
 
 BPF_PERF_OUTPUT(xcap_pcap_event);
 
-static inline void skb_capture_event_notify(void *ctx, struct sk_buff *skb, u32 len, struct pcap *pcap)
+static inline void skb_capture_event_notify(void *ctx, struct sk_buff *skb, u32 len, struct pcap *pcap, void *ext)
 {
 #ifdef STACK_DUMP
     pcap->hdr.stack_id = xcap_stack.get_stackid(ctx, 0);
 #endif
 
-#ifdef ENABLE_USER_ACTION
-	pcap->hdr.extend_action_ret = xcap_user_action(ctx, skb, len, &pcap->user, pcap->hdr.trace_position_index);
+#ifdef ENABLE_EXT_ACTION
+	pcap->hdr.extend_action_ret = xcap_ext_action(ext, skb, len, &pcap->user, pcap->hdr.trace_position_index);
 #endif
 	xcap_pcap_event.perf_submit(ctx, pcap, sizeof(*pcap));
 }

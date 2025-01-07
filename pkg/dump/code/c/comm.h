@@ -12,7 +12,7 @@ struct pcap_hdr {
 	u32 reserved;
 };
 
-#ifdef ENABLE_USER_ACTION
+#ifdef ENABLE_EXT_ACTION
 
 #else
 struct xcap_user_extend {
