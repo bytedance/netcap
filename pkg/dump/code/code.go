@@ -102,6 +102,7 @@ func (s *baseCodeImpl) baseGenerate(opt *Option) error {
 		if err != nil {
 			return err
 		}
+		s.tcpdumpFilterCode += "\n"
 		s.compileFlags = append(s.compileFlags, "-DENABLE_FILTER")
 	} else {
 		s.tcpdumpFilterCode = ""
